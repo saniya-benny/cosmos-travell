@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Telescope - Infinite Space Explorer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000000;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            cursor: crosshair;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .ui-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .telescope-hud {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 20, 40, 0.8);
+            border: 2px solid #00ffff;
+            border-radius: 10px;
+            padding: 15px;
+            backdrop-filter: blur(10px);
+            font-family: 'Courier New', monospace;
+        }
+
+        .hud-title {
+            color: #00ffff;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .hud-data {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: #ffffff;
+        }
+
+        .coordinates {
+            color: #00ff00;
+        }
+
+        .distance {
+            color: #ffff00;
+        }
+
+        .telescope-crosshair {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            border: 2px solid rgba(0, 255, 255, 0.7);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .crosshair-lines {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            pointer-events: none;
+        }
+
+        .crosshair-lines::before,
+        .crosshair-lines::after {
+            content: '';
+            position: absolute;
+            background: rgba(0, 255, 255, 0.5);
+        }
+
+        .crosshair-lines::before {
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            transform: translateY(-50%);
+        }
+
+        .crosshair-lines::after {
+            top: 0;
+            left: 50%;
+            width: 1px;
+            height: 100%;
+            transform: translateX(-50%);
+        }
+
+        .zoom-controls {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: auto;
+        }
+
+        .zoom-btn {
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 20, 40, 0.8);
+            border: 2px solid #00ffff;
+            color: #00ffff;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .zoom-btn:hover {
+            background: rgba(0, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .navigation-info {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            background: rgba(0, 20, 40, 0.8);
+            border: 2px solid #00ffff;
+            border-radius: 10px;
+            padding: 15px;
+            backdrop-filter: blur(10px);
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #ffffff;
+        }
+
+        .star-info {
+            position: absolute;
+            top: 50%;
+            right: 30px;
+            transform: translateY(-50%);
+            background: rgba(0, 20, 40, 0.9);
+            border: 2px solid #ffff00;
+            border-radius: 10px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            font-family: 'Courier New', monospace;
+            max-width: 300px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .star-info.visible {
+            opacity: 1;
+        }
+
+        .star-name {
+            color: #ffff00;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .star-details {
+            color: #ffffff;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .earth-indicator {
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .earth-arrow {
+            font-size: 2rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(1); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.1); }
+        }
+
+        .infinite-space-title {
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            opacity: 0;
+            animation: fadeInTitle 3s ease forwards;
+        }
+
+        .infinite-space-title h1 {
+            font-size: 3rem;
+            background: linear-gradient(45deg, #ffffff, #00ffff, #ffff00, #ff00ff);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 4s ease-in-out infinite;
+            margin-bottom: 20px;
+        }
+
+        .infinite-space-title p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            letter-spacing: 2px;
+        }
+
+        @keyframes fadeInTitle {
+            to { opacity: 1; }
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .telescope-hud,
+            .navigation-info,
+            .star-info {
+                font-size: 0.8rem;
+                padding: 10px;
+            }
+            
+            .infinite-space-title h1 {
+                font-size: 2rem;
+            }
+            
+            .infinite-space-title p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container"></div>
+    
+    <div class="ui-overlay">
+        <div class="telescope-hud">
+            <div class="hud-title">Cosmic Telescope</div>
+            <div class="hud-data">
+                <div>Altitude: <span class="coordinates" id="altitude">408 km</span></div>
+                <div>Position: <span class="coordinates" id="position">Above Earth</span></div>
+                <div>Target: <span class="distance" id="target">Deep Space</span></div>
+                <div>Zoom: <span id="zoomLevel">1x</span></div>
+            </div>
+        </div>
+        
+        <div class="telescope-crosshair"></div>
+        <div class="crosshair-lines"></div>
+        
+        <div class="zoom-controls">
+            <button class="zoom-btn" id="zoomIn">+</button>
+            <button class="zoom-btn" id="zoomOut">−</button>
+        </div>
+        
+        <div class="navigation-info">
+            <div>🖱 Mouse: Look around</div>
+            <div>🔍 Zoom: +/- buttons</div>
+            <div>🌌 Click: Focus on objects</div>
+        </div>
+        
+        <div class="earth-indicator">
+            <div class="earth-arrow">↓</div>
+            <div>Earth Below</div>
+        </div>
+        
+        <div class="star-info" id="starInfo">
+            <div class="star-name" id="starName">Unknown Object</div>
+            <div class="star-details" id="starDetails">
+                Distance: Unknown<br>
+                Type: Celestial Body<br>
+                Magnitude: Variable
+            </div>
+        </div>
+        
+        <div class="infinite-space-title">
+            <h1>Infinite Space Explorer</h1>
+            <p>Journey through the cosmos</p>
+        </div>
+    </div>
+
+    <!-- Three.js from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <script>
+        class SpaceTelescopeExperience {
+            constructor() {
+                this.scene = null;
+                this.camera = null;
+                this.renderer = null;
+                this.earth = null;
+                this.stars = [];
+                this.planets = [];
+                this.galaxies = [];
+                this.mouse = { x: 0, y: 0 };
+                this.zoomLevel = 1;
+                this.maxZoom = 50;
+                this.minZoom = 0.5;
+                this.raycaster = new THREE.Raycaster();
+                this.mouseVector = new THREE.Vector2();
+                
+                this.init();
+            }
+
+            init() {
+                this.setupScene();
+                this.setupCamera();
+                this.setupRenderer();
+                this.setupLighting();
+                this.createEarth();
+                this.createStarField();
+                this.createPlanets();
+                this.createGalaxies();
+                this.createNebulae();
+                this.setupEventListeners();
+                this.animate();
+                
+                // Hide title after 5 seconds
+                setTimeout(() => {
+                    document.querySelector('.infinite-space-title').style.opacity = '0';
+                }, 5000);
+            }
+
+            setupScene() {
+                this.scene = new THREE.Scene();
+                this.scene.background = new THREE.Color(0x000008);
+            }
+
+            setupCamera() {
+                this.camera = new THREE.PerspectiveCamera(
+                    75, 
+                    window.innerWidth / window.innerHeight, 
+                    0.1, 
+                    10000
+                );
+                this.camera.position.set(0, 500, 0); // Above Earth
+                this.camera.lookAt(0, 1000, 0); // Looking up into space
+            }
+
+            setupRenderer() {
+                this.renderer = new THREE.WebGLRenderer({ 
+                    antialias: true,
+                    alpha: true 
+                });
+                this.renderer.setSize(window.innerWidth, window.innerHeight);
+                this.renderer.setClearColor(0x000008, 1);
+                document.getElementById('canvas-container').appendChild(this.renderer.domElement);
+            }
+
+            setupLighting() {
+                // Ambient light for space
+                const ambientLight = new THREE.AmbientLight(0x404040, 0.2);
+                this.scene.add(ambientLight);
+
+                // Sun light
+                const sunLight = new THREE.DirectionalLight(0xffffff, 1);
+                sunLight.position.set(1000, 500, 1000);
+                this.scene.add(sunLight);
+            }
+
+            createEarth() {
+                const earthGeometry = new THREE.SphereGeometry(100, 64, 64);
+                
+                // Earth texture (procedural)
+                const earthMaterial = new THREE.MeshPhongMaterial({
+                    color: 0x4488ff,
+                    shininess: 100,
+                    transparent: true,
+                    opacity: 0.9
+                });
+
+                this.earth = new THREE.Mesh(earthGeometry, earthMaterial);
+                this.earth.position.set(0, -200, 0); // Below the camera
+                this.scene.add(this.earth);
+
+                // Earth atmosphere
+                const atmosphereGeometry = new THREE.SphereGeometry(105, 32, 32);
+                const atmosphereMaterial = new THREE.MeshBasicMaterial({
+                    color: 0x88ccff,
+                    transparent: true,
+                    opacity: 0.1,
+                    side: THREE.BackSide
+                });
+                const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
+                atmosphere.position.copy(this.earth.position);
+                this.scene.add(atmosphere);
+            }
+
+            createStarField() {
+                const starGeometry = new THREE.BufferGeometry();
+                const starCount = 10000;
+                const positions = new Float32Array(starCount * 3);
+                const colors = new Float32Array(starCount * 3);
+
+                for (let i = 0; i < starCount; i++) {
+                    // Random positions in a large sphere
+                    const radius = Math.random() * 8000 + 2000;
+                    const theta = Math.random() * Math.PI * 2;
+                    const phi = Math.random() * Math.PI;
+
+                    positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
+                    positions[i * 3 + 1] = radius * Math.cos(phi) + 500; // Offset upward
+                    positions[i * 3 + 2] = radius * Math.sin(phi) * Math.sin(theta);
+
+                    // Star colors
+                    const starType = Math.random();
+                    if (starType < 0.3) {
+                        // Blue stars
+                        colors[i * 3] = 0.5 + Math.random() * 0.5;
+                        colors[i * 3 + 1] = 0.7 + Math.random() * 0.3;
+                        colors[i * 3 + 2] = 1;
+                    } else if (starType < 0.6) {
+                        // White stars
+                        colors[i * 3] = 0.9 + Math.random() * 0.1;
+                        colors[i * 3 + 1] = 0.9 + Math.random() * 0.1;
+                        colors[i * 3 + 2] = 0.9 + Math.random() * 0.1;
+                    } else {
+                        // Red/orange stars
+                        colors[i * 3] = 1;
+                        colors[i * 3 + 1] = 0.3 + Math.random() * 0.4;
+                        colors[i * 3 + 2] = 0.1 + Math.random() * 0.2;
+                    }
+                }
+
+                starGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+                starGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+                const starMaterial = new THREE.PointsMaterial({
+                    size: 2,
+                    vertexColors: true,
+                    transparent: true,
+                    opacity: 0.8
+                });
+
+                const stars = new THREE.Points(starGeometry, starMaterial);
+                this.scene.add(stars);
+                this.stars.push(stars);
+            }
+
+            createPlanets() {
+                const planetData = [
+                    { 
+                        name: 'Mars', 
+                        color: 0xff4444, 
+                        distance: 800, 
+                        size: 15,
+                        scientificName: 'Mars (Sol IV)',
+                        mass: '6.39 × 10²³ kg',
+                        diameter: '6,779 km',
+                        orbitalPeriod: '687 Earth days',
+                        temperature: '-80°C to 20°C',
+                        atmosphere: '95.3% CO₂, 2.7% N₂',
+                        moons: 2,
+                        discovery: 'Known since antiquity',
+                        classification: 'Terrestrial Planet'
+                    },
+                    { 
+                        name: 'Jupiter', 
+                        color: 0xffaa44, 
+                        distance: 1500, 
+                        size: 40,
+                        scientificName: 'Jupiter (Sol V)',
+                        mass: '1.90 × 10²⁷ kg',
+                        diameter: '139,820 km',
+                        orbitalPeriod: '11.9 Earth years',
+                        temperature: '-108°C (cloud tops)',
+                        atmosphere: '89% H₂, 10% He, 1% CH₄',
+                        moons: 95,
+                        discovery: 'Known since antiquity',
+                        classification: 'Gas Giant'
+                    },
+                    { 
+                        name: 'Saturn', 
+                        color: 0xffdd88, 
+                        distance: 2200, 
+                        size: 35,
+                        scientificName: 'Saturn (Sol VI)',
+                        mass: '5.68 × 10²⁶ kg',
+                        diameter: '116,460 km',
+                        orbitalPeriod: '29.5 Earth years',
+                        temperature: '-139°C (cloud tops)',
+                        atmosphere: '96% H₂, 3% He, 1% CH₄',
+                        moons: 146,
+                        discovery: 'Known since antiquity',
+                        classification: 'Gas Giant'
+                    },
+                    { 
+                        name: 'Kepler-442b', 
+                        color: 0x44ff44, 
+                        distance: 3000, 
+                        size: 20,
+                        scientificName: 'Kepler-442b',
+                        mass: '2.3 Earth masses',
+                        diameter: '13,400 km (estimated)',
+                        orbitalPeriod: '112.3 Earth days',
+                        temperature: '-40°C to 30°C (estimated)',
+                        atmosphere: 'Unknown (potentially habitable)',
+                        moons: 'Unknown',
+                        discovery: '2015 (Kepler Space Telescope)',
+                        classification: 'Super-Earth Exoplanet'
+                    },
+                    { 
+                        name: 'HD 209458b', 
+                        color: 0x8844ff, 
+                        distance: 4500, 
+                        size: 25,
+                        scientificName: 'HD 209458b (Osiris)',
+                        mass: '0.69 Jupiter masses',
+                        diameter: '94,000 km',
+                        orbitalPeriod: '3.5 Earth days',
+                        temperature: '1,000°C (day side)',
+                        atmosphere: 'H₂O, CO, Na detected',
+                        moons: 'None detected',
+                        discovery: '1999 (Transit method)',
+                        classification: 'Hot Jupiter Exoplanet'
+                    }
+                ];
+
+                planetData.forEach((data, index) => {
+                    const planetGeometry = new THREE.SphereGeometry(data.size, 32, 32);
+                    const planetMaterial = new THREE.MeshPhongMaterial({
+                        color: data.color,
+                        shininess: 50
+                    });
+
+                    const planet = new THREE.Mesh(planetGeometry, planetMaterial);
+                    
+                    // Position planets in different directions
+                    const angle = (index / planetData.length) * Math.PI * 2;
+                    planet.position.set(
+                        Math.cos(angle) * data.distance,
+                        500 + Math.sin(index) * 200,
+                        Math.sin(angle) * data.distance
+                    );
+
+                    planet.userData = {
+                        name: data.name,
+                        scientificName: data.scientificName,
+                        distance: data.distance + ' million km',
+                        type: data.classification,
+                        mass: data.mass,
+                        diameter: data.diameter,
+                        orbitalPeriod: data.orbitalPeriod,
+                        temperature: data.temperature,
+                        atmosphere: data.atmosphere,
+                        moons: data.moons,
+                        discovery: data.discovery,
+                        magnitude: (Math.random() * 5 + 1).toFixed(1)
+                    };
+
+                    this.scene.add(planet);
+                    this.planets.push(planet);
+                });
+            }
+
+            createGalaxies() {
+                const galaxyData = [
+                    {
+                        name: 'Andromeda Galaxy',
+                        scientificName: 'M31 (NGC 224)',
+                        distance: '2.537 million light years',
+                        diameter: '220,000 light years',
+                        mass: '1.5 × 10¹² solar masses',
+                        stars: '1 trillion stars',
+                        type: 'Spiral Galaxy (SA(s)b)',
+                        age: '10.01 billion years',
+                        discovery: '964 AD (Abd al-Rahman al-Sufi)',
+                        velocity: '-110 km/s (approaching)',
+                        magnitude: '3.44'
+                    },
+                    {
+                        name: 'Whirlpool Galaxy',
+                        scientificName: 'M51a (NGC 5194)',
+                        distance: '23.16 million light years',
+                        diameter: '76,900 light years',
+                        mass: '1.6 × 10¹¹ solar masses',
+                        stars: '100 billion stars',
+                        type: 'Grand Design Spiral (SA(s)bc)',
+                        age: '13.2 billion years',
+                        discovery: '1773 (Charles Messier)',
+                        velocity: '+463 km/s (receding)',
+                        magnitude: '8.4'
+                    },
+                    {
+                        name: 'Sombrero Galaxy',
+                        scientificName: 'M104 (NGC 4594)',
+                        distance: '31.1 million light years',
+                        diameter: '49,000 light years',
+                        mass: '8 × 10¹¹ solar masses',
+                        stars: '800 billion stars',
+                        type: 'Lenticular Galaxy (SA(s)a)',
+                        age: '13.25 billion years',
+                        discovery: '1781 (Pierre Méchain)',
+                        velocity: '+1,024 km/s (receding)',
+                        magnitude: '8.0'
+                    },
+                    {
+                        name: 'Pinwheel Galaxy',
+                        scientificName: 'M101 (NGC 5457)',
+                        distance: '20.9 million light years',
+                        diameter: '170,000 light years',
+                        mass: '1 × 10¹¹ solar masses',
+                        stars: '1 trillion stars',
+                        type: 'Face-on Spiral (SAB(rs)cd)',
+                        age: '13.2 billion years',
+                        discovery: '1781 (Pierre Méchain)',
+                        velocity: '+241 km/s (receding)',
+                        magnitude: '7.86'
+                    },
+                    {
+                        name: 'Triangulum Galaxy',
+                        scientificName: 'M33 (NGC 598)',
+                        distance: '2.73 million light years',
+                        diameter: '60,000 light years',
+                        mass: '5 × 10¹⁰ solar masses',
+                        stars: '40 billion stars',
+                        type: 'Spiral Galaxy (SA(s)cd)',
+                        age: '12.8 billion years',
+                        discovery: '1764 (Giovanni Battista Hodierna)',
+                        velocity: '-179 km/s (approaching)',
+                        magnitude: '5.72'
+                    }
+                ];
+
+                galaxyData.forEach((data, i) => {
+                    const galaxyGroup = new THREE.Group();
+                    
+                    // Galaxy core
+                    const coreGeometry = new THREE.SphereGeometry(50, 16, 16);
+                    const coreMaterial = new THREE.MeshBasicMaterial({
+                        color: 0xffaa00,
+                        transparent: true,
+                        opacity: 0.6
+                    });
+                    const core = new THREE.Mesh(coreGeometry, coreMaterial);
+                    galaxyGroup.add(core);
+
+                    // Galaxy arms (simplified)
+                    const armGeometry = new THREE.TorusGeometry(100, 20, 8, 16);
+                    const armMaterial = new THREE.MeshBasicMaterial({
+                        color: 0x6666ff,
+                        transparent: true,
+                        opacity: 0.3
+                    });
+                    const arms = new THREE.Mesh(armGeometry, armMaterial);
+                    arms.rotation.x = Math.PI / 2;
+                    galaxyGroup.add(arms);
+
+                    // Position galaxies far away
+                    galaxyGroup.position.set(
+                        (Math.random() - 0.5) * 15000,
+                        Math.random() * 3000 + 2000,
+                        (Math.random() - 0.5) * 15000
+                    );
+
+                    galaxyGroup.userData = {
+                        name: data.name,
+                        scientificName: data.scientificName,
+                        distance: data.distance,
+                        diameter: data.diameter,
+                        mass: data.mass,
+                        stars: data.stars,
+                        type: data.type,
+                        age: data.age,
+                        discovery: data.discovery,
+                        velocity: data.velocity,
+                        magnitude: data.magnitude
+                    };
+
+                    this.scene.add(galaxyGroup);
+                    this.galaxies.push(galaxyGroup);
+                });
+            }
+
+            createNebulae() {
+                const nebulaData = [
+                    {
+                        name: 'Rosette Nebula',
+                        scientificName: 'NGC 2237 (Caldwell 49)',
+                        distance: '5,200 light years',
+                        diameter: '130 light years',
+                        mass: '10,400 solar masses',
+                        type: 'Emission Nebula (H II region)',
+                        age: '4 million years',
+                        discovery: '1690 (John Flamsteed)',
+                        temperature: '10,000 K (ionized gas)',
+                        composition: 'Hydrogen, Helium, Oxygen',
+                        magnitude: '9.0',
+                        color: 0xff4488
+                    },
+                    {
+                        name: 'Eagle Nebula',
+                        scientificName: 'M16 (NGC 6611)',
+                        distance: '7,000 light years',
+                        diameter: '70 × 55 light years',
+                        mass: '15,000 solar masses',
+                        type: 'Star-forming Nebula',
+                        age: '5.5 million years',
+                        discovery: '1745-46 (Jean-Philippe de Chéseaux)',
+                        temperature: '8,500 K (central region)',
+                        composition: 'H₂, CO, Dust grains',
+                        magnitude: '6.0',
+                        color: 0x44ff88
+                    },
+                    {
+                        name: 'Horsehead Nebula',
+                        scientificName: 'Barnard 33',
+                        distance: '1,500 light years',
+                        diameter: '3.5 light years',
+                        mass: '27 solar masses',
+                        type: 'Dark Nebula',
+                        age: '5 million years',
+                        discovery: '1888 (Williamina Fleming)',
+                        temperature: '20 K (dust cloud)',
+                        composition: 'Silicate dust, H₂, CO',
+                        magnitude: '6.8 (background)',
+                        color: 0x4488ff
+                    }
+                ];
+
+                nebulaData.forEach((data, i) => {
+                    const nebulaGeometry = new THREE.SphereGeometry(200, 16, 16);
+                    const nebulaMaterial = new THREE.MeshBasicMaterial({
+                        color: data.color,
+                        transparent: true,
+                        opacity: 0.1,
+                        side: THREE.DoubleSide
+                    });
+
+                    const nebula = new THREE.Mesh(nebulaGeometry, nebulaMaterial);
+                    nebula.position.set(
+                        (Math.random() - 0.5) * 6000,
+                        Math.random() * 2000 + 1000,
+                        (Math.random() - 0.5) * 6000
+                    );
+
+                    nebula.userData = {
+                        name: data.name,
+                        scientificName: data.scientificName,
+                        distance: data.distance,
+                        diameter: data.diameter,
+                        mass: data.mass,
+                        type: data.type,
+                        age: data.age,
+                        discovery: data.discovery,
+                        temperature: data.temperature,
+                        composition: data.composition,
+                        magnitude: data.magnitude
+                    };
+
+                    this.scene.add(nebula);
+                });
+            }
+
+            setupEventListeners() {
+                window.addEventListener('resize', () => this.onWindowResize(), false);
+                
+                // Mouse movement for camera control
+                document.addEventListener('mousemove', (event) => {
+                    this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+                    this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+                    
+                    // Update camera rotation based on mouse
+                    this.camera.rotation.y = this.mouse.x * 0.5;
+                    this.camera.rotation.x = this.mouse.y * 0.3;
+                }, false);
+
+                // Click to focus on objects
+                document.addEventListener('click', (event) => {
+                    this.mouseVector.x = (event.clientX / window.innerWidth) * 2 - 1;
+                    this.mouseVector.y = -(event.clientY / window.innerHeight) * 2 + 1;
+                    
+                    this.raycaster.setFromCamera(this.mouseVector, this.camera);
+                    // Get all nebulae from the scene
+                    const nebulae = this.scene.children.filter(child => 
+                        child.userData && child.userData.composition
+                    );
+                    const intersects = this.raycaster.intersectObjects([...this.planets, ...this.galaxies, ...nebulae]);
+                    
+                    if (intersects.length > 0) {
+                        this.showObjectInfo(intersects[0].object);
+                    } else {
+                        this.hideObjectInfo();
+                    }
+                }, false);
+
+                // Zoom controls
+                document.getElementById('zoomIn').addEventListener('click', () => this.zoomIn());
+                document.getElementById('zoomOut').addEventListener('click', () => this.zoomOut());
+                
+                // Scroll wheel zoom
+                document.addEventListener('wheel', (event) => {
+                    if (event.deltaY < 0) {
+                        this.zoomIn();
+                    } else {
+                        this.zoomOut();
+                    }
+                    event.preventDefault();
+                }, { passive: false });
+            }
+
+            zoomIn() {
+                if (this.zoomLevel < this.maxZoom) {
+                    this.zoomLevel *= 1.2;
+                    this.camera.fov = 75 / this.zoomLevel;
+                    this.camera.updateProjectionMatrix();
+                    document.getElementById('zoomLevel').textContent = this.zoomLevel.toFixed(1) + 'x';
+                }
+            }
+
+            zoomOut() {
+                if (this.zoomLevel > this.minZoom) {
+                    this.zoomLevel /= 1.2;
+                    this.camera.fov = 75 / this.zoomLevel;
+                    this.camera.updateProjectionMatrix();
+                    document.getElementById('zoomLevel').textContent = this.zoomLevel.toFixed(1) + 'x';
+                }
+            }
+
+            showObjectInfo(object) {
+                const info = document.getElementById('starInfo');
+                const name = document.getElementById('starName');
+                const details = document.getElementById('starDetails');
+                
+                if (object.userData) {
+                    name.textContent = object.userData.name;
+                    
+                    let detailsHTML = '';
+                    
+                    // Check if it's a planet
+                    if (object.userData.scientificName && object.userData.mass && object.userData.orbitalPeriod) {
+                        detailsHTML = `
+                            <strong>Scientific Name:</strong> ${object.userData.scientificName}<br>
+                            <strong>Distance:</strong> ${object.userData.distance}<br>
+                            <strong>Type:</strong> ${object.userData.type}<br>
+                            <strong>Mass:</strong> ${object.userData.mass}<br>
+                            <strong>Diameter:</strong> ${object.userData.diameter}<br>
+                            <strong>Orbital Period:</strong> ${object.userData.orbitalPeriod}<br>
+                            <strong>Temperature:</strong> ${object.userData.temperature}<br>
+                            <strong>Atmosphere:</strong> ${object.userData.atmosphere}<br>
+                            <strong>Moons:</strong> ${object.userData.moons}<br>
+                            <strong>Discovery:</strong> ${object.userData.discovery}<br>
+                            <strong>Magnitude:</strong> ${object.userData.magnitude}
+                        `;
+                    }
+                    // Check if it's a galaxy
+                    else if (object.userData.stars && object.userData.age) {
+                        detailsHTML = `
+                            <strong>Scientific Name:</strong> ${object.userData.scientificName}<br>
+                            <strong>Distance:</strong> ${object.userData.distance}<br>
+                            <strong>Type:</strong> ${object.userData.type}<br>
+                            <strong>Diameter:</strong> ${object.userData.diameter}<br>
+                            <strong>Mass:</strong> ${object.userData.mass}<br>
+                            <strong>Stars:</strong> ${object.userData.stars}<br>
+                            <strong>Age:</strong> ${object.userData.age}<br>
+                            <strong>Radial Velocity:</strong> ${object.userData.velocity}<br>
+                            <strong>Discovery:</strong> ${object.userData.discovery}<br>
+                            <strong>Magnitude:</strong> ${object.userData.magnitude}
+                        `;
+                    }
+                    // Check if it's a nebula
+                    else if (object.userData.composition && object.userData.temperature) {
+                        detailsHTML = `
+                            <strong>Scientific Name:</strong> ${object.userData.scientificName}<br>
+                            <strong>Distance:</strong> ${object.userData.distance}<br>
+                            <strong>Type:</strong> ${object.userData.type}<br>
+                            <strong>Diameter:</strong> ${object.userData.diameter}<br>
+                            <strong>Mass:</strong> ${object.userData.mass}<br>
+                            <strong>Age:</strong> ${object.userData.age}<br>
+                            <strong>Temperature:</strong> ${object.userData.temperature}<br>
+                            <strong>Composition:</strong> ${object.userData.composition}<br>
+                            <strong>Discovery:</strong> ${object.userData.discovery}<br>
+                            <strong>Magnitude:</strong> ${object.userData.magnitude}
+                        `;
+                    }
+                    // Fallback for other objects
+                    else {
+                        detailsHTML = `
+                            <strong>Distance:</strong> ${object.userData.distance}<br>
+                            <strong>Type:</strong> ${object.userData.type}<br>
+                            <strong>Magnitude:</strong> ${object.userData.magnitude}
+                        `;
+                    }
+                    
+                    details.innerHTML = detailsHTML;
+                    info.classList.add('visible');
+                }
+            }
+
+            hideObjectInfo() {
+                document.getElementById('starInfo').classList.remove('visible');
+            }
+
+            onWindowResize() {
+                this.camera.aspect = window.innerWidth / window.innerHeight;
+                this.camera.updateProjectionMatrix();
+                this.renderer.setSize(window.innerWidth, window.innerHeight);
+            }
+
+            animate() {
+                requestAnimationFrame(() => this.animate());
+
+                // Rotate Earth
+                if (this.earth) {
+                    this.earth.rotation.y += 0.005;
+                }
+
+                // Rotate planets
+                this.planets.forEach((planet, index) => {
+                    planet.rotation.y += 0.01 + index * 0.002;
+                });
+
+                // Rotate galaxies
+                this.galaxies.forEach(galaxy => {
+                    galaxy.rotation.y += 0.001;
+                });
+
+                // Twinkle stars
+                this.stars.forEach(starField => {
+                    if (starField.material.opacity) {
+                        starField.material.opacity = 0.6 + Math.sin(Date.now() * 0.001) * 0.2;
+                    }
+                });
+
+                // Update HUD
+                this.updateHUD();
+
+                this.renderer.render(this.scene, this.camera);
+            }
+
+            updateHUD() {
+                const altitude = document.getElementById('altitude');
+                const position = document.getElementById('position');
+                const target = document.getElementById('target');
+                
+                // Simulate changing data
+                const currentAltitude = 408 + Math.sin(Date.now() * 0.001) * 5;
+                altitude.textContent = currentAltitude.toFixed(1) + ' km';
+                
+                // Update position based on camera rotation
+                const lat = (this.camera.rotation.x * 180 / Math.PI).toFixed(1);
+                const lon = (this.camera.rotation.y * 180 / Math.PI).toFixed(1);
+                position.textContent = `${lat}°, ${lon}°`;
+                
+                // Update target based on zoom
+                if (this.zoomLevel > 10) {
+                    target.textContent = 'Distant Galaxies';
+                } else if (this.zoomLevel > 5) {
+                    target.textContent = 'Nearby Stars';
+                } else {
+                    target.textContent = 'Solar System';
+                }
+            }
+        }
+
+        // Initialize when page loads
+        window.addEventListener('load', () => {
+            new SpaceTelescopeExperience();
+        });
+    </script>
+</body>
+</html>
