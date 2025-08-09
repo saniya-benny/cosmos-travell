@@ -252,6 +252,562 @@
             50% { background-position: 100% 50%; }
         }
 
+        .cosmic-quote {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 800px;
+            background: rgba(20, 0, 60, 0.8);
+            border: 2px solid #ff00ff;
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(15px);
+            font-family: 'Courier New', monospace;
+            opacity: 0;
+            transform: translateX(-50%) translateY(20px);
+            transition: all 0.8s ease;
+            pointer-events: auto;
+            text-align: center;
+        }
+
+        .cosmic-quote.visible {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .quote-text {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #ffffff;
+            font-style: italic;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .quote-text::before {
+            content: '"';
+            font-size: 2rem;
+            color: #ff00ff;
+            vertical-align: top;
+            line-height: 0.8;
+        }
+
+        .quote-text::after {
+            content: '"';
+            font-size: 2rem;
+            color: #ff00ff;
+            vertical-align: bottom;
+            line-height: 0.8;
+        }
+
+        .quote-author {
+            text-align: right;
+            color: #00ffff;
+            font-size: 0.9rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .quote-author::before {
+            content: '— ';
+            color: #ff00ff;
+        }
+
+        .cosmic-compass {
+            position: absolute;
+            top: 80px;
+            right: 20px;
+            width: 120px;
+            height: 120px;
+            background: rgba(10, 0, 30, 0.9);
+            border: 2px solid #00ffff;
+            border-radius: 50%;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: floatCompass 3s ease-in-out infinite;
+            z-index: 1000;
+        }
+
+        .compass-ring {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border: 1px solid rgba(0, 255, 255, 0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .compass-needle {
+            position: absolute;
+            width: 2px;
+            height: 40px;
+            background: linear-gradient(to top, #ff0000, #ffff00);
+            border-radius: 1px;
+            transform-origin: bottom center;
+            animation: spinNeedle 8s linear infinite;
+            z-index: 2;
+        }
+
+        .compass-needle::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -2px;
+            width: 6px;
+            height: 6px;
+            background: #ffff00;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #ffff00;
+        }
+
+        .compass-direction {
+            position: absolute;
+            font-size: 0.7rem;
+            font-weight: bold;
+            color: #00ffff;
+            text-shadow: 0 0 5px #00ffff;
+            font-family: 'Courier New', monospace;
+        }
+
+        .compass-direction.north {
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .compass-direction.south {
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .compass-direction.east {
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .compass-direction.west {
+            left: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .compass-center {
+            font-size: 1.5rem;
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+            font-weight: bold;
+            z-index: 3;
+        }
+
+        @keyframes floatCompass {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes spinNeedle {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Cloud Overlay System */
+        .cloud-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 500;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+
+        .cloud-overlay.active {
+            opacity: 1;
+        }
+
+        .cloud {
+            position: absolute;
+            background: radial-gradient(ellipse at center, 
+                rgba(140, 140, 140, 0.95) 0%,
+                rgba(100, 100, 100, 0.98) 30%,
+                rgba(70, 70, 70, 0.95) 60%,
+                rgba(40, 40, 40, 0.9) 100%);
+            border-radius: 60px;
+            filter: blur(2px);
+            box-shadow: 
+                inset 0 0 50px rgba(200, 200, 200, 0.3),
+                0 0 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .cloud::before,
+        .cloud::after {
+            content: '';
+            position: absolute;
+            background: inherit;
+            border-radius: 50px;
+        }
+
+        .cloud1 {
+            width: 300px;
+            height: 120px;
+            top: 15%;
+            left: -350px;
+        }
+
+        .cloud1::before {
+            width: 180px;
+            height: 180px;
+            top: -80px;
+            left: 30px;
+            border-radius: 90px;
+        }
+
+        .cloud1::after {
+            width: 140px;
+            height: 140px;
+            top: -60px;
+            right: 40px;
+            border-radius: 70px;
+        }
+
+        .cloud2 {
+            width: 400px;
+            height: 140px;
+            top: 35%;
+            left: -450px;
+        }
+
+        .cloud2::before {
+            width: 200px;
+            height: 200px;
+            top: -90px;
+            left: 60px;
+            border-radius: 100px;
+        }
+
+        .cloud2::after {
+            width: 160px;
+            height: 160px;
+            top: -70px;
+            right: 50px;
+            border-radius: 80px;
+        }
+
+        .cloud3 {
+            width: 350px;
+            height: 130px;
+            top: 55%;
+            left: -400px;
+        }
+
+        .cloud3::before {
+            width: 170px;
+            height: 170px;
+            top: -75px;
+            left: 50px;
+            border-radius: 85px;
+        }
+
+        .cloud3::after {
+            width: 130px;
+            height: 130px;
+            top: -55px;
+            right: 35px;
+            border-radius: 65px;
+        }
+
+        .cloud4 {
+            width: 280px;
+            height: 110px;
+            top: 10%;
+            left: -320px;
+        }
+
+        .cloud4::before {
+            width: 150px;
+            height: 150px;
+            top: -65px;
+            left: 40px;
+            border-radius: 75px;
+        }
+
+        .cloud4::after {
+            width: 120px;
+            height: 120px;
+            top: -45px;
+            right: 25px;
+            border-radius: 60px;
+        }
+
+        .cloud5 {
+            width: 450px;
+            height: 160px;
+            top: 65%;
+            left: -500px;
+        }
+
+        .cloud5::before {
+            width: 220px;
+            height: 220px;
+            top: -100px;
+            left: 70px;
+            border-radius: 110px;
+        }
+
+        .cloud5::after {
+            width: 180px;
+            height: 180px;
+            top: -80px;
+            right: 60px;
+            border-radius: 90px;
+        }
+
+        @keyframes driftClouds {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(100vw + 400px)); }
+        }
+
+        /* Weather Pop-up */
+        .weather-popup {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            display: none;
+        }
+
+        .popup-content {
+            background: linear-gradient(135deg, 
+                rgba(40, 40, 40, 0.95) 0%,
+                rgba(20, 20, 20, 0.98) 100%);
+            border: 2px solid #666;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            min-width: 300px;
+        }
+
+        .popup-content h3 {
+            color: #ff6666;
+            margin: 0 0 15px 0;
+            font-size: 1.5rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        .popup-content p {
+            color: #cccccc;
+            margin: 0 0 20px 0;
+            font-size: 1.1rem;
+            font-style: italic;
+        }
+
+        .popup-content button {
+            background: linear-gradient(135deg, #444, #222);
+            color: #fff;
+            border: 1px solid #666;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .popup-content button:hover {
+            background: linear-gradient(135deg, #555, #333);
+            border-color: #888;
+        }
+
+        /* Street Lamp Focus Error */
+        .street-lamp-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a0a 0%, #2a2a1a 100%);
+            z-index: 600;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            pointer-events: none;
+        }
+
+        .street-lamp-overlay.active {
+            opacity: 1;
+        }
+
+        .street-lamp {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .lamp-post {
+            width: 8px;
+            height: 200px;
+            background: linear-gradient(to right, #333, #666, #333);
+            margin: 0 auto;
+            border-radius: 4px;
+        }
+
+        .lamp-light {
+            width: 80px;
+            height: 40px;
+            background: radial-gradient(ellipse at center, #ffff88 0%, #ffaa00 70%, #ff8800 100%);
+            border-radius: 50%;
+            margin: -20px auto 0;
+            box-shadow: 0 0 100px #ffaa00;
+        }
+
+        .lamp-glow {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 255, 136, 0.3) 0%, rgba(255, 170, 0, 0.1) 50%, transparent 70%);
+            border-radius: 50%;
+            position: absolute;
+            top: -130px;
+            left: -110px;
+            animation: lampFlicker 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes lampFlicker {
+            0% { opacity: 0.8; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.05); }
+        }
+
+        .moth {
+            position: absolute;
+            font-size: 1.5rem;
+            display: none;
+            z-index: 10;
+        }
+
+        .moth1 {
+            top: 40%;
+            left: 45%;
+        }
+
+        .moth2 {
+            top: 60%;
+            left: 55%;
+        }
+
+        .moth3 {
+            top: 50%;
+            left: 40%;
+        }
+
+        @keyframes mothFlight {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(20px, -15px) rotate(10deg); }
+            50% { transform: translate(-10px, -25px) rotate(-5deg); }
+            75% { transform: translate(15px, -10px) rotate(8deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        /* Battery Drain Overlay */
+        .battery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 700;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            pointer-events: none;
+        }
+
+        .battery-overlay.active {
+            opacity: 1;
+        }
+
+        .battery-overlay.dead {
+            background: rgba(0, 0, 0, 0.95);
+        }
+
+        .battery-indicator {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            display: none;
+        }
+
+        .battery-shell {
+            width: 200px;
+            height: 40px;
+            border: 3px solid #00ff00;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .battery-level {
+            height: 100%;
+            background: linear-gradient(to right, #00ff00 0%, #ffff00 50%, #ff0000 100%);
+            width: 100%;
+            transition: width 0.1s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .battery-text {
+            color: #00ff00;
+            text-align: center;
+            margin-top: 5px;
+            font-size: 0.8rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        .low-battery-warning {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #ff0000;
+            display: none;
+        }
+
+        .battery-overlay.dead .low-battery-warning {
+            display: block;
+        }
+
+        .low-battery-warning h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #ff0000;
+        }
+
+        .blinking-text {
+            font-size: 1.2rem;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
         /* Responsive design */
         @media (max-width: 768px) {
             .telescope-hud,
@@ -266,6 +822,60 @@
             }
             
             .infinite-space-title p {
+                font-size: 1rem;
+            }
+            
+            .cosmic-quote {
+                bottom: 15px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 95%;
+                max-width: none;
+                padding: 20px 25px;
+                border-radius: 20px;
+            }
+            
+            .cosmic-quote.visible {
+                transform: translateX(-50%) translateY(0);
+            }
+            
+            .quote-text {
+                font-size: 1rem;
+                line-height: 1.5;
+                margin-bottom: 15px;
+            }
+            
+            .quote-text::before,
+            .quote-text::after {
+                font-size: 2.5rem;
+            }
+            
+            .quote-author {
+                font-size: 0.9rem;
+                letter-spacing: 1.5px;
+            }
+            
+            .cosmic-compass {
+                top: 15px;
+                right: 15px;
+                width: 80px;
+                height: 80px;
+            }
+            
+            .compass-ring {
+                width: 65px;
+                height: 65px;
+            }
+            
+            .compass-needle {
+                height: 25px;
+            }
+            
+            .compass-direction {
+                font-size: 0.5rem;
+            }
+            
+            .compass-center {
                 font-size: 1rem;
             }
         }
@@ -317,6 +927,61 @@
             <h1>Infinite Space Explorer</h1>
             <p>Journey through the cosmos</p>
         </div>
+        
+        <div class="cosmic-compass" id="cosmicCompass">
+            <div class="compass-ring">
+                <div class="compass-needle" id="compassNeedle"></div>
+                <div class="compass-direction north">VOID</div>
+                <div class="compass-direction south">ABYSS</div>
+                <div class="compass-direction east">BEYOND</div>
+                <div class="compass-direction west">ELSEWHERE</div>
+                <div class="compass-center">∞</div>
+            </div>
+        </div>
+        
+        <!-- Cloud Overlay System -->
+        <div class="cloud-overlay" id="cloudOverlay">
+            <div class="cloud cloud1"></div>
+            <div class="cloud cloud2"></div>
+            <div class="cloud cloud3"></div>
+            <div class="cloud cloud4"></div>
+            <div class="cloud cloud5"></div>
+        </div>
+        
+        <!-- Street Lamp Focus Error -->
+        <div class="street-lamp-overlay" id="streetLampOverlay">
+            <div class="street-lamp">
+                <div class="lamp-post"></div>
+                <div class="lamp-light"></div>
+                <div class="lamp-glow"></div>
+            </div>
+            <div class="moth moth1">🦋</div>
+            <div class="moth moth2">🦋</div>
+            <div class="moth moth3">🦋</div>
+        </div>
+        
+        <!-- Battery Drain Overlay -->
+        <div class="battery-overlay" id="batteryOverlay">
+            <div class="battery-indicator" id="batteryIndicator">
+                <div class="battery-shell">
+                    <div class="battery-level" id="batteryLevel">100%</div>
+                </div>
+                <div class="battery-text">Battery Level</div>
+            </div>
+            <div class="low-battery-warning">
+                <h2>⚠️ CRITICAL BATTERY LOW ⚠️</h2>
+                <p class="blinking-text">Please replace with AA batteries that don't exist.</p>
+            </div>
+        </div>
+        
+        <!-- Sarcastic Weather Pop-up -->
+        <div class="weather-popup" id="weatherPopup">
+            <div class="popup-content">
+                <h3>🌧️ Weather Not Cooperating</h3>
+                <p id="sarcasticMessage">Please enjoy staring at grey nothing.</p>
+                <button onclick="this.parentElement.parentElement.style.display='none'">Accept Disappointment</button>
+            </div>
+        </div>
     </div>
 
     <!-- Three.js from CDN -->
@@ -332,8 +997,29 @@
                 this.stars = [];
                 this.planets = [];
                 this.galaxies = [];
+                this.meteors = [];
+                this.spaceStations = [];
+                this.spacecraft = [];
                 this.mouse = { x: 0, y: 0 };
                 this.zoomLevel = 1;
+                this.quotes = [
+                    { text: "Space is big. My problems are bigger.", author: "Cosmic Pessimist" },
+                    { text: "Houston, we have a problem. It's Monday.", author: "Astronaut" },
+                    { text: "In space, no one can hear you procrastinate.", author: "Space Slacker" },
+                    { text: "Mars: Still has better WiFi than my house.", author: "Tech Support" },
+                    { text: "I'm not lost in space. I'm avoiding responsibilities.", author: "Space Cadet" },
+                    { text: "Aliens exist. They're just avoiding Earth for obvious reasons.", author: "Xenobiologist" },
+                    { text: "Black holes: Where my motivation goes to die.", author: "Physics Student" },
+                    { text: "The Moon landing was real. My diet plan? That's fake.", author: "Conspiracy Theorist" },
+                    { text: "Gravity works. My life doesn't.", author: "Physicist" },
+                    { text: "Space exploration: Because Earth has too many people.", author: "Misanthrope" },
+                    { text: "I need space. About 93 million miles should do.", author: "Introvert" },
+                    { text: "The universe is expanding. So are my student loans.", author: "Graduate Student" },
+                    { text: "Stars are born, live, and die. Just like my New Year's resolutions.", author: "Realist" },
+                    { text: "Rocket science: It's not brain surgery. Oh wait...", author: "Confused Engineer" },
+                    { text: "Space is the final frontier. My couch is the first.", author: "Couch Potato" }
+                ];
+                this.currentQuoteIndex = 0;
                 this.maxZoom = 50;
                 this.minZoom = 0.5;
                 this.raycaster = new THREE.Raycaster();
@@ -352,7 +1038,12 @@
                 this.createPlanets();
                 this.createGalaxies();
                 this.createNebulae();
+                this.createMeteors();
+                this.createSpaceStations();
+                this.createSpacecraft();
+                this.createBlackHole();
                 this.setupEventListeners();
+                this.setupCloudMode();
                 this.animate();
                 
                 // Hide title after 5 seconds
@@ -388,14 +1079,27 @@
             }
 
             setupLighting() {
-                // Ambient light for space
-                const ambientLight = new THREE.AmbientLight(0x404040, 0.2);
+                // Ambient light for space (very dim)
+                const ambientLight = new THREE.AmbientLight(0x202040, 0.1);
                 this.scene.add(ambientLight);
 
-                // Sun light
-                const sunLight = new THREE.DirectionalLight(0xffffff, 1);
-                sunLight.position.set(1000, 500, 1000);
+                // Main sun light (distant)
+                const sunLight = new THREE.DirectionalLight(0xffffff, 1.2);
+                sunLight.position.set(2000, 1000, 2000);
+                sunLight.castShadow = true;
+                sunLight.shadow.mapSize.width = 2048;
+                sunLight.shadow.mapSize.height = 2048;
                 this.scene.add(sunLight);
+                
+                // Secondary light for rim lighting effect
+                const rimLight = new THREE.DirectionalLight(0x4488ff, 0.3);
+                rimLight.position.set(-1000, 500, -1000);
+                this.scene.add(rimLight);
+                
+                // Point light for local illumination
+                const localLight = new THREE.PointLight(0xffffff, 0.5, 5000);
+                localLight.position.set(0, 1000, 0);
+                this.scene.add(localLight);
             }
 
             createEarth() {
@@ -427,54 +1131,164 @@
             }
 
             createStarField() {
+                // Create Milky Way galaxy background
+                this.createMilkyWay();
+                
+                // Create main star field
                 const starGeometry = new THREE.BufferGeometry();
-                const starCount = 10000;
+                const starCount = 15000;
                 const positions = new Float32Array(starCount * 3);
                 const colors = new Float32Array(starCount * 3);
+                const sizes = new Float32Array(starCount);
 
                 for (let i = 0; i < starCount; i++) {
-                    // Random positions in a large sphere
-                    const radius = Math.random() * 8000 + 2000;
-                    const theta = Math.random() * Math.PI * 2;
-                    const phi = Math.random() * Math.PI;
-
-                    positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
-                    positions[i * 3 + 1] = radius * Math.cos(phi) + 500; // Offset upward
-                    positions[i * 3 + 2] = radius * Math.sin(phi) * Math.sin(theta);
-
-                    // Star colors
-                    const starType = Math.random();
-                    if (starType < 0.3) {
-                        // Blue stars
-                        colors[i * 3] = 0.5 + Math.random() * 0.5;
-                        colors[i * 3 + 1] = 0.7 + Math.random() * 0.3;
-                        colors[i * 3 + 2] = 1;
-                    } else if (starType < 0.6) {
-                        // White stars
-                        colors[i * 3] = 0.9 + Math.random() * 0.1;
-                        colors[i * 3 + 1] = 0.9 + Math.random() * 0.1;
-                        colors[i * 3 + 2] = 0.9 + Math.random() * 0.1;
+                    // Create more realistic star distribution
+                    let radius, density;
+                    
+                    // 70% of stars in galactic plane (Milky Way disk)
+                    if (Math.random() < 0.7) {
+                        radius = Math.random() * 12000 + 3000;
+                        const theta = Math.random() * Math.PI * 2;
+                        const phi = (Math.random() - 0.5) * 0.3; // Thin disk
+                        
+                        positions[i * 3] = radius * Math.cos(theta);
+                        positions[i * 3 + 1] = radius * Math.sin(phi) * 200 + 500;
+                        positions[i * 3 + 2] = radius * Math.sin(theta);
+                        density = 1.0;
                     } else {
-                        // Red/orange stars
-                        colors[i * 3] = 1;
-                        colors[i * 3 + 1] = 0.3 + Math.random() * 0.4;
-                        colors[i * 3 + 2] = 0.1 + Math.random() * 0.2;
+                        // 30% in galactic halo (spherical distribution)
+                        radius = Math.random() * 8000 + 2000;
+                        const theta = Math.random() * Math.PI * 2;
+                        const phi = Math.random() * Math.PI;
+                        
+                        positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
+                        positions[i * 3 + 1] = radius * Math.cos(phi) + 500;
+                        positions[i * 3 + 2] = radius * Math.sin(phi) * Math.sin(theta);
+                        density = 0.3;
                     }
+
+                    // Realistic star colors based on stellar classification
+                    const starType = Math.random();
+                    let starSize = 1;
+                    
+                    if (starType < 0.05) {
+                        // O-type stars (blue giants) - very rare
+                        colors[i * 3] = 0.6 + Math.random() * 0.4;
+                        colors[i * 3 + 1] = 0.8 + Math.random() * 0.2;
+                        colors[i * 3 + 2] = 1;
+                        starSize = 3 + Math.random() * 2;
+                    } else if (starType < 0.15) {
+                        // B-type stars (blue-white) - rare
+                        colors[i * 3] = 0.8 + Math.random() * 0.2;
+                        colors[i * 3 + 1] = 0.9 + Math.random() * 0.1;
+                        colors[i * 3 + 2] = 1;
+                        starSize = 2 + Math.random() * 1;
+                    } else if (starType < 0.25) {
+                        // A-type stars (white) - uncommon
+                        colors[i * 3] = 0.95 + Math.random() * 0.05;
+                        colors[i * 3 + 1] = 0.95 + Math.random() * 0.05;
+                        colors[i * 3 + 2] = 1;
+                        starSize = 1.5 + Math.random() * 0.5;
+                    } else if (starType < 0.35) {
+                        // F-type stars (yellow-white) - uncommon
+                        colors[i * 3] = 1;
+                        colors[i * 3 + 1] = 0.95 + Math.random() * 0.05;
+                        colors[i * 3 + 2] = 0.8 + Math.random() * 0.2;
+                        starSize = 1.2 + Math.random() * 0.3;
+                    } else if (starType < 0.45) {
+                        // G-type stars (yellow, like our Sun) - common
+                        colors[i * 3] = 1;
+                        colors[i * 3 + 1] = 0.9 + Math.random() * 0.1;
+                        colors[i * 3 + 2] = 0.6 + Math.random() * 0.2;
+                        starSize = 1 + Math.random() * 0.2;
+                    } else if (starType < 0.75) {
+                        // K-type stars (orange) - very common
+                        colors[i * 3] = 1;
+                        colors[i * 3 + 1] = 0.6 + Math.random() * 0.3;
+                        colors[i * 3 + 2] = 0.2 + Math.random() * 0.3;
+                        starSize = 0.8 + Math.random() * 0.2;
+                    } else {
+                        // M-type stars (red dwarfs) - most common
+                        colors[i * 3] = 1;
+                        colors[i * 3 + 1] = 0.3 + Math.random() * 0.3;
+                        colors[i * 3 + 2] = 0.1 + Math.random() * 0.2;
+                        starSize = 0.5 + Math.random() * 0.3;
+                    }
+                    
+                    sizes[i] = starSize * density;
                 }
 
                 starGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
                 starGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+                starGeometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
 
                 const starMaterial = new THREE.PointsMaterial({
                     size: 2,
                     vertexColors: true,
                     transparent: true,
-                    opacity: 0.8
+                    opacity: 0.9,
+                    sizeAttenuation: true
                 });
 
                 const stars = new THREE.Points(starGeometry, starMaterial);
                 this.scene.add(stars);
                 this.stars.push(stars);
+            }
+            
+            createMilkyWay() {
+                // Create Milky Way galaxy background using a large textured plane
+                const milkyWayGeometry = new THREE.SphereGeometry(20000, 64, 64);
+                
+                // Create a canvas texture for the Milky Way
+                const canvas = document.createElement('canvas');
+                canvas.width = 2048;
+                canvas.height = 1024;
+                const ctx = canvas.getContext('2d');
+                
+                // Create gradient for galactic plane
+                const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                gradient.addColorStop(0, 'rgba(20, 10, 40, 0)');
+                gradient.addColorStop(0.4, 'rgba(60, 40, 80, 0.1)');
+                gradient.addColorStop(0.5, 'rgba(120, 80, 160, 0.3)');
+                gradient.addColorStop(0.6, 'rgba(60, 40, 80, 0.1)');
+                gradient.addColorStop(1, 'rgba(20, 10, 40, 0)');
+                
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Add some dust lanes and bright regions
+                for (let i = 0; i < 50; i++) {
+                    const x = Math.random() * canvas.width;
+                    const y = canvas.height * 0.4 + Math.random() * canvas.height * 0.2;
+                    const size = Math.random() * 100 + 20;
+                    
+                    const dustGradient = ctx.createRadialGradient(x, y, 0, x, y, size);
+                    if (Math.random() < 0.3) {
+                        // Bright regions (star clusters)
+                        dustGradient.addColorStop(0, 'rgba(255, 200, 150, 0.2)');
+                        dustGradient.addColorStop(1, 'rgba(255, 200, 150, 0)');
+                    } else {
+                        // Dark dust lanes
+                        dustGradient.addColorStop(0, 'rgba(10, 5, 20, 0.3)');
+                        dustGradient.addColorStop(1, 'rgba(10, 5, 20, 0)');
+                    }
+                    
+                    ctx.fillStyle = dustGradient;
+                    ctx.fillRect(x - size, y - size, size * 2, size * 2);
+                }
+                
+                const milkyWayTexture = new THREE.CanvasTexture(canvas);
+                const milkyWayMaterial = new THREE.MeshBasicMaterial({
+                    map: milkyWayTexture,
+                    transparent: true,
+                    opacity: 0.6,
+                    side: THREE.BackSide
+                });
+                
+                const milkyWay = new THREE.Mesh(milkyWayGeometry, milkyWayMaterial);
+                milkyWay.rotation.x = Math.PI / 6; // Tilt the galaxy
+                this.scene.add(milkyWay);
+                this.milkyWay = milkyWay;
             }
 
             createPlanets() {
@@ -557,23 +1371,141 @@
                 ];
 
                 planetData.forEach((data, index) => {
-                    const planetGeometry = new THREE.SphereGeometry(data.size, 32, 32);
-                    const planetMaterial = new THREE.MeshPhongMaterial({
-                        color: data.color,
-                        shininess: 50
-                    });
+                    const planetGroup = new THREE.Group();
+                    
+                    // Create planet body with enhanced materials
+                    const planetGeometry = new THREE.SphereGeometry(data.size, 64, 64);
+                    let planetMaterial;
+                    
+                    // Special materials for different planets
+                    if (data.name === 'Saturn') {
+                        // Saturn with atmospheric bands
+                        planetMaterial = new THREE.MeshPhongMaterial({
+                            color: data.color,
+                            shininess: 30,
+                            transparent: true,
+                            opacity: 0.9
+                        });
+                        
+                        // Create Saturn's rings
+                        const ringGeometry = new THREE.RingGeometry(data.size * 1.2, data.size * 2.2, 64);
+                        const ringMaterial = new THREE.MeshBasicMaterial({
+                            color: 0xccaa88,
+                            transparent: true,
+                            opacity: 0.7,
+                            side: THREE.DoubleSide
+                        });
+                        const rings = new THREE.Mesh(ringGeometry, ringMaterial);
+                        rings.rotation.x = Math.PI / 2;
+                        planetGroup.add(rings);
+                        
+                        // Add ring particles for realism
+                        const particleGeometry = new THREE.BufferGeometry();
+                        const particleCount = 2000;
+                        const positions = new Float32Array(particleCount * 3);
+                        
+                        for (let i = 0; i < particleCount; i++) {
+                            const radius = data.size * 1.2 + Math.random() * data.size;
+                            const angle = Math.random() * Math.PI * 2;
+                            positions[i * 3] = Math.cos(angle) * radius;
+                            positions[i * 3 + 1] = (Math.random() - 0.5) * 5;
+                            positions[i * 3 + 2] = Math.sin(angle) * radius;
+                        }
+                        
+                        particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+                        const particleMaterial = new THREE.PointsMaterial({
+                            color: 0xffffff,
+                            size: 2,
+                            transparent: true,
+                            opacity: 0.6
+                        });
+                        const ringParticles = new THREE.Points(particleGeometry, particleMaterial);
+                        planetGroup.add(ringParticles);
+                        
+                    } else if (data.name === 'Jupiter') {
+                        // Jupiter with Great Red Spot effect
+                        planetMaterial = new THREE.MeshPhongMaterial({
+                            color: data.color,
+                            shininess: 20,
+                            transparent: true,
+                            opacity: 0.95
+                        });
+                        
+                        // Add atmospheric bands (simplified)
+                        const bandGeometry = new THREE.SphereGeometry(data.size * 1.01, 32, 16);
+                        const bandMaterial = new THREE.MeshBasicMaterial({
+                            color: 0xaa6644,
+                            transparent: true,
+                            opacity: 0.3
+                        });
+                        const bands = new THREE.Mesh(bandGeometry, bandMaterial);
+                        planetGroup.add(bands);
+                        
+                    } else if (data.name === 'Mars') {
+                        // Mars with polar ice caps
+                        planetMaterial = new THREE.MeshPhongMaterial({
+                            color: data.color,
+                            shininess: 10,
+                            transparent: true,
+                            opacity: 0.9
+                        });
+                        
+                        // Add polar ice caps
+                        const iceCap1 = new THREE.SphereGeometry(data.size * 0.2, 16, 16);
+                        const iceMaterial = new THREE.MeshPhongMaterial({
+                            color: 0xffffff,
+                            transparent: true,
+                            opacity: 0.8
+                        });
+                        const northPole = new THREE.Mesh(iceCap1, iceMaterial);
+                        northPole.position.y = data.size * 0.8;
+                        planetGroup.add(northPole);
+                        
+                        const southPole = new THREE.Mesh(iceCap1, iceMaterial);
+                        southPole.position.y = -data.size * 0.8;
+                        planetGroup.add(southPole);
+                        
+                    } else if (data.name === 'Kepler-442b') {
+                        // Potentially habitable exoplanet with atmosphere
+                        planetMaterial = new THREE.MeshPhongMaterial({
+                            color: data.color,
+                            shininess: 60,
+                            transparent: true,
+                            opacity: 0.9
+                        });
+                        
+                        // Add atmosphere glow
+                        const atmosphereGeometry = new THREE.SphereGeometry(data.size * 1.1, 32, 32);
+                        const atmosphereMaterial = new THREE.MeshBasicMaterial({
+                            color: 0x88ccff,
+                            transparent: true,
+                            opacity: 0.2,
+                            side: THREE.BackSide
+                        });
+                        const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
+                        planetGroup.add(atmosphere);
+                        
+                    } else {
+                        // Default planet material
+                        planetMaterial = new THREE.MeshPhongMaterial({
+                            color: data.color,
+                            shininess: 50
+                        });
+                    }
 
                     const planet = new THREE.Mesh(planetGeometry, planetMaterial);
+                    planetGroup.add(planet);
                     
-                    // Position planets in different directions
+                    // Position planet group
                     const angle = (index / planetData.length) * Math.PI * 2;
-                    planet.position.set(
+                    planetGroup.position.set(
                         Math.cos(angle) * data.distance,
                         500 + Math.sin(index) * 200,
                         Math.sin(angle) * data.distance
                     );
 
-                    planet.userData = {
+                    // Store userData on both the planet and the group for clicking
+                    const userData = {
                         name: data.name,
                         scientificName: data.scientificName,
                         distance: data.distance + ' million km',
@@ -587,9 +1519,15 @@
                         discovery: data.discovery,
                         magnitude: (Math.random() * 5 + 1).toFixed(1)
                     };
+                    
+                    planet.userData = userData;
+                    planetGroup.userData = userData;
 
-                    this.scene.add(planet);
-                    this.planets.push(planet);
+                    this.scene.add(planetGroup);
+                    this.planets.push(planet); // Keep planet reference for rotation
+                    
+                    // Store the group for clicking detection
+                    planetGroup.planetMesh = planet;
                 });
             }
 
@@ -791,10 +1729,700 @@
                     this.scene.add(nebula);
                 });
             }
+            
+            createMeteors() {
+                // Create initial meteors
+                for (let i = 0; i < 20; i++) {
+                    this.createSingleMeteor();
+                }
+            }
+            
+            createSingleMeteor() {
+                const meteorGroup = new THREE.Group();
+                
+                // Meteor body
+                const meteorGeometry = new THREE.SphereGeometry(2 + Math.random() * 3, 8, 8);
+                const meteorMaterial = new THREE.MeshPhongMaterial({
+                    color: 0x888888,
+                    shininess: 10,
+                    transparent: true,
+                    opacity: 0.8
+                });
+                const meteorBody = new THREE.Mesh(meteorGeometry, meteorMaterial);
+                meteorGroup.add(meteorBody);
+                
+                // Meteor trail
+                const trailGeometry = new THREE.BufferGeometry();
+                const trailPositions = new Float32Array(30 * 3); // 10 trail points
+                const trailColors = new Float32Array(30 * 3);
+                
+                for (let i = 0; i < 10; i++) {
+                    const alpha = i / 9;
+                    trailPositions[i * 9] = -i * 20; // Trail behind meteor
+                    trailPositions[i * 9 + 1] = Math.random() * 4 - 2;
+                    trailPositions[i * 9 + 2] = Math.random() * 4 - 2;
+                    trailPositions[i * 9 + 3] = -i * 20 - 5;
+                    trailPositions[i * 9 + 4] = Math.random() * 4 - 2;
+                    trailPositions[i * 9 + 5] = Math.random() * 4 - 2;
+                    trailPositions[i * 9 + 6] = -i * 20 - 10;
+                    trailPositions[i * 9 + 7] = Math.random() * 4 - 2;
+                    trailPositions[i * 9 + 8] = Math.random() * 4 - 2;
+                    
+                    // Orange to red gradient for trail
+                    const r = 1;
+                    const g = 0.5 + alpha * 0.5;
+                    const b = 0.1;
+                    
+                    for (let j = 0; j < 3; j++) {
+                        trailColors[i * 9 + j * 3] = r;
+                        trailColors[i * 9 + j * 3 + 1] = g * (1 - alpha);
+                        trailColors[i * 9 + j * 3 + 2] = b;
+                    }
+                }
+                
+                trailGeometry.setAttribute('position', new THREE.BufferAttribute(trailPositions, 3));
+                trailGeometry.setAttribute('color', new THREE.BufferAttribute(trailColors, 3));
+                
+                const trailMaterial = new THREE.PointsMaterial({
+                    size: 4,
+                    vertexColors: true,
+                    transparent: true,
+                    opacity: 0.7,
+                    blending: THREE.AdditiveBlending
+                });
+                
+                const trail = new THREE.Points(trailGeometry, trailMaterial);
+                meteorGroup.add(trail);
+                
+                // Random starting position (far from camera)
+                const distance = 3000 + Math.random() * 2000;
+                const angle = Math.random() * Math.PI * 2;
+                const height = Math.random() * 1000 + 500;
+                
+                meteorGroup.position.set(
+                    Math.cos(angle) * distance,
+                    height,
+                    Math.sin(angle) * distance
+                );
+                
+                // Random velocity toward camera area
+                const targetX = (Math.random() - 0.5) * 1000;
+                const targetY = 500 + (Math.random() - 0.5) * 500;
+                const targetZ = (Math.random() - 0.5) * 1000;
+                
+                const direction = new THREE.Vector3(
+                    targetX - meteorGroup.position.x,
+                    targetY - meteorGroup.position.y,
+                    targetZ - meteorGroup.position.z
+                ).normalize();
+                
+                const speed = 5 + Math.random() * 10; // Reduced from 20-50 to 5-15
+                meteorGroup.velocity = direction.multiplyScalar(speed);
+                meteorGroup.life = 0;
+                meteorGroup.maxLife = 200 + Math.random() * 100;
+                
+                this.scene.add(meteorGroup);
+                this.meteors.push(meteorGroup);
+            }
+            
+            createSpaceStations() {
+                const stationData = [
+                    {
+                        name: 'International Space Station',
+                        type: 'Research Station',
+                        crew: 7,
+                        altitude: 408,
+                        speed: 27580,
+                        modules: 16
+                    },
+                    {
+                        name: 'Lunar Gateway',
+                        type: 'Lunar Outpost',
+                        crew: 4,
+                        altitude: 384400,
+                        speed: 1022,
+                        modules: 8
+                    },
+                    {
+                        name: 'Mars Station Alpha',
+                        type: 'Deep Space Station',
+                        crew: 12,
+                        altitude: 225000000,
+                        speed: 24077,
+                        modules: 24
+                    }
+                ];
+
+                stationData.forEach((data, index) => {
+                    const stationGroup = new THREE.Group();
+                    
+                    // Main station body
+                    const bodyGeometry = new THREE.CylinderGeometry(8, 8, 20, 8);
+                    const bodyMaterial = new THREE.MeshPhongMaterial({
+                        color: 0xcccccc,
+                        shininess: 100
+                    });
+                    const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+                    stationGroup.add(body);
+                    
+                    // Solar panels
+                    for (let i = 0; i < 4; i++) {
+                        const panelGeometry = new THREE.PlaneGeometry(15, 8);
+                        const panelMaterial = new THREE.MeshPhongMaterial({
+                            color: 0x1a1a3a,
+                            shininess: 200,
+                            transparent: true,
+                            opacity: 0.8
+                        });
+                        const panel = new THREE.Mesh(panelGeometry, panelMaterial);
+                        const angle = (i / 4) * Math.PI * 2;
+                        panel.position.set(Math.cos(angle) * 12, 0, Math.sin(angle) * 12);
+                        panel.lookAt(0, 0, 0);
+                        stationGroup.add(panel);
+                    }
+                    
+                    // Communication dish
+                    const dishGeometry = new THREE.SphereGeometry(3, 16, 8, 0, Math.PI);
+                    const dishMaterial = new THREE.MeshPhongMaterial({
+                        color: 0xffffff,
+                        shininess: 150
+                    });
+                    const dish = new THREE.Mesh(dishGeometry, dishMaterial);
+                    dish.position.y = 12;
+                    dish.rotation.x = Math.PI;
+                    stationGroup.add(dish);
+                    
+                    // Docking ports
+                    for (let i = 0; i < 2; i++) {
+                        const portGeometry = new THREE.CylinderGeometry(2, 2, 4, 8);
+                        const portMaterial = new THREE.MeshPhongMaterial({
+                            color: 0x666666,
+                            shininess: 80
+                        });
+                        const port = new THREE.Mesh(portGeometry, portMaterial);
+                        port.position.y = i === 0 ? 14 : -14;
+                        stationGroup.add(port);
+                    }
+                    
+                    // Position stations
+                    const distance = 800 + index * 400;
+                    const angle = (index / stationData.length) * Math.PI * 2;
+                    stationGroup.position.set(
+                        Math.cos(angle) * distance,
+                        300 + index * 200,
+                        Math.sin(angle) * distance
+                    );
+                    
+                    // Add blinking lights
+                    const lightGeometry = new THREE.SphereGeometry(0.5, 8, 8);
+                    const lightMaterial = new THREE.MeshBasicMaterial({
+                        color: 0x00ff00,
+                        transparent: true,
+                        opacity: 0.8
+                    });
+                    
+                    for (let i = 0; i < 6; i++) {
+                        const light = new THREE.Mesh(lightGeometry, lightMaterial.clone());
+                        const lightAngle = (i / 6) * Math.PI * 2;
+                        light.position.set(
+                            Math.cos(lightAngle) * 9,
+                            Math.sin(i) * 8,
+                            Math.sin(lightAngle) * 9
+                        );
+                        stationGroup.add(light);
+                    }
+                    
+                    stationGroup.userData = {
+                        name: data.name,
+                        type: data.type,
+                        crew: data.crew,
+                        altitude: data.altitude + ' km',
+                        speed: data.speed + ' km/h',
+                        modules: data.modules,
+                        status: 'Operational',
+                        lastContact: 'Active'
+                    };
+                    
+                    this.scene.add(stationGroup);
+                    this.spaceStations.push(stationGroup);
+                });
+            }
+            
+            createSpacecraft() {
+                const spacecraftTypes = [
+                    { name: 'Dragon Capsule', color: 0xffffff, size: 3 },
+                    { name: 'Orion Spacecraft', color: 0xcccccc, size: 4 },
+                    { name: 'Soyuz Vehicle', color: 0x888888, size: 2.5 },
+                    { name: 'Starship', color: 0xaaaaaa, size: 6 }
+                ];
+
+                for (let i = 0; i < 8; i++) {
+                    const craftData = spacecraftTypes[Math.floor(Math.random() * spacecraftTypes.length)];
+                    const craftGroup = new THREE.Group();
+                    
+                    // Main body
+                    const bodyGeometry = new THREE.ConeGeometry(craftData.size, craftData.size * 2, 8);
+                    const bodyMaterial = new THREE.MeshPhongMaterial({
+                        color: craftData.color,
+                        shininess: 120
+                    });
+                    const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+                    craftGroup.add(body);
+                    
+                    // Thruster glow
+                    const thrusterGeometry = new THREE.SphereGeometry(craftData.size * 0.3, 8, 8);
+                    const thrusterMaterial = new THREE.MeshBasicMaterial({
+                        color: 0x0088ff,
+                        transparent: true,
+                        opacity: 0.6
+                    });
+                    const thruster = new THREE.Mesh(thrusterGeometry, thrusterMaterial);
+                    thruster.position.y = -craftData.size;
+                    craftGroup.add(thruster);
+                    
+                    // Random starting position
+                    const distance = 600 + Math.random() * 800;
+                    const angle = Math.random() * Math.PI * 2;
+                    const height = 200 + Math.random() * 400;
+                    
+                    craftGroup.position.set(
+                        Math.cos(angle) * distance,
+                        height,
+                        Math.sin(angle) * distance
+                    );
+                    
+                    // Random orbital velocity
+                    const orbitalSpeed = 2 + Math.random() * 3;
+                    craftGroup.orbitalAngle = angle;
+                    craftGroup.orbitalRadius = distance;
+                    craftGroup.orbitalSpeed = orbitalSpeed * 0.01;
+                    craftGroup.height = height;
+                    
+                    craftGroup.userData = {
+                        name: craftData.name + ' ' + (i + 1),
+                        type: 'Spacecraft',
+                        mission: ['Crew Transport', 'Cargo Delivery', 'Research Mission', 'Station Resupply'][Math.floor(Math.random() * 4)],
+                        status: 'In Transit',
+                        fuel: Math.floor(Math.random() * 100) + '%',
+                        crew: Math.floor(Math.random() * 7)
+                    };
+                    
+                    this.scene.add(craftGroup);
+                    this.spacecraft.push(craftGroup);
+                }
+            }
+            
+            createBlackHole() {
+                const blackHoleGroup = new THREE.Group();
+                
+                // Event Horizon (invisible black sphere)
+                const eventHorizonGeometry = new THREE.SphereGeometry(50, 32, 32);
+                const eventHorizonMaterial = new THREE.MeshBasicMaterial({
+                    color: 0x000000,
+                    transparent: true,
+                    opacity: 0.95
+                });
+                const eventHorizon = new THREE.Mesh(eventHorizonGeometry, eventHorizonMaterial);
+                blackHoleGroup.add(eventHorizon);
+                
+                // Photon Sphere (subtle glow around event horizon)
+                const photonSphereGeometry = new THREE.SphereGeometry(75, 32, 32);
+                const photonSphereMaterial = new THREE.MeshBasicMaterial({
+                    color: 0xff4400,
+                    transparent: true,
+                    opacity: 0.1,
+                    side: THREE.BackSide
+                });
+                const photonSphere = new THREE.Mesh(photonSphereGeometry, photonSphereMaterial);
+                blackHoleGroup.add(photonSphere);
+                
+                // Accretion Disk
+                const diskGeometry = new THREE.RingGeometry(80, 200, 64);
+                const diskMaterial = new THREE.MeshBasicMaterial({
+                    color: 0xff6600,
+                    transparent: true,
+                    opacity: 0.7,
+                    side: THREE.DoubleSide
+                });
+                const accretionDisk = new THREE.Mesh(diskGeometry, diskMaterial);
+                accretionDisk.rotation.x = Math.PI / 2;
+                blackHoleGroup.add(accretionDisk);
+                
+                // Inner hot disk
+                const innerDiskGeometry = new THREE.RingGeometry(60, 120, 32);
+                const innerDiskMaterial = new THREE.MeshBasicMaterial({
+                    color: 0xffaa00,
+                    transparent: true,
+                    opacity: 0.8,
+                    side: THREE.DoubleSide
+                });
+                const innerDisk = new THREE.Mesh(innerDiskGeometry, innerDiskMaterial);
+                innerDisk.rotation.x = Math.PI / 2;
+                blackHoleGroup.add(innerDisk);
+                
+                // Plasma jets (top and bottom)
+                for (let i = 0; i < 2; i++) {
+                    const jetGeometry = new THREE.ConeGeometry(15, 300, 8);
+                    const jetMaterial = new THREE.MeshBasicMaterial({
+                        color: 0x00aaff,
+                        transparent: true,
+                        opacity: 0.6
+                    });
+                    const jet = new THREE.Mesh(jetGeometry, jetMaterial);
+                    jet.position.y = i === 0 ? 200 : -200;
+                    jet.rotation.x = i === 0 ? 0 : Math.PI;
+                    blackHoleGroup.add(jet);
+                }
+                
+                // Gravitational lensing rings
+                for (let i = 0; i < 3; i++) {
+                    const ringGeometry = new THREE.RingGeometry(250 + i * 100, 260 + i * 100, 64);
+                    const ringMaterial = new THREE.MeshBasicMaterial({
+                        color: 0xffffff,
+                        transparent: true,
+                        opacity: 0.1 - i * 0.03,
+                        side: THREE.DoubleSide
+                    });
+                    const lensingRing = new THREE.Mesh(ringGeometry, ringMaterial);
+                    lensingRing.rotation.x = Math.PI / 2;
+                    blackHoleGroup.add(lensingRing);
+                }
+                
+                // Position the black hole
+                blackHoleGroup.position.set(-1500, 200, -2000);
+                
+                // Store references for animation
+                blackHoleGroup.accretionDisk = accretionDisk;
+                blackHoleGroup.innerDisk = innerDisk;
+                blackHoleGroup.jets = blackHoleGroup.children.filter(child => 
+                    child.geometry instanceof THREE.ConeGeometry
+                );
+                
+                // Add scientific data
+                blackHoleGroup.userData = {
+                    name: 'Sagittarius A*-II',
+                    type: 'Supermassive Black Hole',
+                    mass: '4.3 million solar masses',
+                    distance: '26,000 light years',
+                    eventHorizonRadius: '12 million km',
+                    temperature: '60 nanokelvin',
+                    discovery: 'Discovered by Event Horizon Telescope 2019',
+                    status: 'Active galactic nucleus',
+                    accretionRate: '10^-9 solar masses per year'
+                };
+                
+                this.scene.add(blackHoleGroup);
+                this.blackHole = blackHoleGroup;
+            }
+            
+            setupCloudMode() {
+                this.cloudOverlay = document.getElementById('cloudOverlay');
+                this.weatherPopup = document.getElementById('weatherPopup');
+                this.sarcasticMessage = document.getElementById('sarcasticMessage');
+                this.streetLampOverlay = document.getElementById('streetLampOverlay');
+                this.batteryOverlay = document.getElementById('batteryOverlay');
+                this.batteryIndicator = document.getElementById('batteryIndicator');
+                this.batteryLevel = document.getElementById('batteryLevel');
+                
+                this.currentStage = 0;
+                this.stageInterval = null;
+                
+                // Start the 7-stage error sequence after 5 seconds
+                setTimeout(() => {
+                    this.startErrorSequence();
+                }, 5000);
+            }
+            
+            startErrorSequence() {
+                // Start the 7-stage sequence with 5-second intervals
+                this.stageInterval = setInterval(() => {
+                    this.executeStage();
+                }, 5000);
+            }
+            
+            executeStage() {
+                this.currentStage = (this.currentStage % 7) + 1;
+                
+                switch(this.currentStage) {
+                    case 1:
+                        this.stage1_NormalView();
+                        break;
+                    case 2:
+                        this.stage2_CloudMode();
+                        break;
+                    case 3:
+                        this.stage3_BackToNormal();
+                        break;
+                    case 4:
+                        this.stage4_StreetLampFocus();
+                        break;
+                    case 5:
+                        this.stage5_BackToNormal();
+                        break;
+                    case 6:
+                        this.stage6_BatteryDrain();
+                        break;
+                    case 7:
+                        this.stage7_FinalNormal();
+                        break;
+                }
+            }
+            
+            stage1_NormalView() {
+                // Crystal-clear night sky - ensure all overlays are hidden
+                this.cloudOverlay.classList.remove('active');
+                this.streetLampOverlay.classList.remove('active');
+                this.batteryOverlay.classList.remove('active');
+                this.weatherPopup.style.display = 'none';
+                console.log("Stage 1: Normal telescope view - crystal clear sky");
+            }
+            
+            stage2_CloudMode() {
+                // Thick animated clouds block the view
+                this.cloudOverlay.classList.add('active');
+                
+                setTimeout(() => {
+                    this.sarcasticMessage.textContent = "Weather not cooperating. Please enjoy staring at grey nothing.";
+                    this.weatherPopup.style.display = 'block';
+                    this.playThunderSound();
+                }, 500);
+                
+                console.log("Stage 2: Cloud mode activated");
+            }
+            
+            stage3_BackToNormal() {
+                // Clouds instantly clear
+                this.cloudOverlay.classList.remove('active');
+                this.weatherPopup.style.display = 'none';
+                
+                setTimeout(() => {
+                    this.sarcasticMessage.textContent = "Visibility restored. Enjoy the cosmos.";
+                    this.weatherPopup.style.display = 'block';
+                }, 500);
+                
+                setTimeout(() => {
+                    this.weatherPopup.style.display = 'none';
+                }, 2000);
+                
+                console.log("Stage 3: Back to normal - clouds cleared");
+            }
+            
+            stage4_StreetLampFocus() {
+                // Auto-focus locks onto street lamp
+                this.streetLampOverlay.classList.add('active');
+                
+                setTimeout(() => {
+                    this.sarcasticMessage.textContent = "That's definitely Jupiter. Trust us.";
+                    this.weatherPopup.style.display = 'block';
+                    this.animateMoths();
+                }, 500);
+                
+                console.log("Stage 4: Street lamp focus error");
+            }
+            
+            stage5_BackToNormal() {
+                // View shifts back to stars
+                this.streetLampOverlay.classList.remove('active');
+                this.weatherPopup.style.display = 'none';
+                console.log("Stage 5: Back to normal - street lamp cleared");
+            }
+            
+            stage6_BatteryDrain() {
+                // Battery drains from 100% to 0%
+                this.batteryOverlay.classList.add('active');
+                this.batteryIndicator.style.display = 'block';
+                
+                let battery = 100;
+                const drainInterval = setInterval(() => {
+                    battery -= 2;
+                    this.batteryLevel.style.width = battery + '%';
+                    this.batteryLevel.textContent = battery + '%';
+                    
+                    if (battery <= 0) {
+                        clearInterval(drainInterval);
+                        this.batteryOverlay.classList.add('dead');
+                        this.playLowBatteryAlarm();
+                        
+                        setTimeout(() => {
+                            this.sarcasticMessage.textContent = "Please replace with AA batteries that don't exist.";
+                            this.weatherPopup.style.display = 'block';
+                        }, 1000);
+                    }
+                }, 100);
+                
+                console.log("Stage 6: Battery drain simulation");
+            }
+            
+            stage7_FinalNormal() {
+                // Screen fades back to perfect starry sky
+                this.batteryOverlay.classList.remove('active');
+                this.batteryOverlay.classList.remove('dead');
+                this.batteryIndicator.style.display = 'none';
+                this.weatherPopup.style.display = 'none';
+                
+                // Reset battery display
+                this.batteryLevel.style.width = '100%';
+                this.batteryLevel.textContent = '100%';
+                
+                setTimeout(() => {
+                    this.sarcasticMessage.textContent = "All systems operational.";
+                    this.weatherPopup.style.display = 'block';
+                }, 500);
+                
+                setTimeout(() => {
+                    this.weatherPopup.style.display = 'none';
+                }, 2000);
+                
+                console.log("Stage 7: Final normal - all systems operational");
+            }
+            
+            animateMoths() {
+                // Create moth animation around the street lamp
+                const moths = document.querySelectorAll('.moth');
+                moths.forEach(moth => {
+                    moth.style.display = 'block';
+                    moth.style.animation = 'mothFlight 3s ease-in-out infinite';
+                });
+                
+                setTimeout(() => {
+                    moths.forEach(moth => {
+                        moth.style.display = 'none';
+                    });
+                }, 4000);
+            }
+            
+            playThunderSound() {
+                // Create thunder sound effect
+                try {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    
+                    // Generate low-frequency rumble for thunder
+                    const bufferSize = audioContext.sampleRate * 3;
+                    const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+                    const output = buffer.getChannelData(0);
+                    
+                    for (let i = 0; i < bufferSize; i++) {
+                        output[i] = (Math.random() * 2 - 1) * Math.exp(-i / (audioContext.sampleRate * 0.5)) * 0.3;
+                    }
+                    
+                    const thunder = audioContext.createBufferSource();
+                    thunder.buffer = buffer;
+                    
+                    const filter = audioContext.createBiquadFilter();
+                    filter.type = 'lowpass';
+                    filter.frequency.setValueAtTime(200, audioContext.currentTime);
+                    
+                    thunder.connect(filter);
+                    filter.connect(audioContext.destination);
+                    
+                    thunder.start();
+                    thunder.stop(audioContext.currentTime + 3);
+                } catch (error) {
+                    console.log('Thunder audio not available');
+                }
+            }
+            
+            playLowBatteryAlarm() {
+                // Create low battery alarm beeps
+                try {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    
+                    for (let i = 0; i < 5; i++) {
+                        setTimeout(() => {
+                            const oscillator = audioContext.createOscillator();
+                            const gainNode = audioContext.createGain();
+                            
+                            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+                            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                            
+                            oscillator.connect(gainNode);
+                            gainNode.connect(audioContext.destination);
+                            
+                            oscillator.start();
+                            oscillator.stop(audioContext.currentTime + 0.2);
+                        }, i * 300);
+                    }
+                } catch (error) {
+                    console.log('Battery alarm audio not available');
+                }
+            }
+            
+            playDrizzleSound() {
+                // Create a simple drizzle sound effect using Web Audio API
+                try {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    
+                    // Create white noise for rain effect
+                    const bufferSize = audioContext.sampleRate * 2; // 2 seconds
+                    const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+                    const output = buffer.getChannelData(0);
+                    
+                    // Generate filtered white noise
+                    for (let i = 0; i < bufferSize; i++) {
+                        output[i] = (Math.random() * 2 - 1) * 0.1; // Low volume white noise
+                    }
+                    
+                    const whiteNoise = audioContext.createBufferSource();
+                    whiteNoise.buffer = buffer;
+                    
+                    // Add low-pass filter for rain-like sound
+                    const filter = audioContext.createBiquadFilter();
+                    filter.type = 'lowpass';
+                    filter.frequency.setValueAtTime(800, audioContext.currentTime);
+                    
+                    // Add gain control
+                    const gainNode = audioContext.createGain();
+                    gainNode.gain.setValueAtTime(0.05, audioContext.currentTime);
+                    
+                    // Connect and play
+                    whiteNoise.connect(filter);
+                    filter.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    whiteNoise.start();
+                    whiteNoise.stop(audioContext.currentTime + 2);
+                } catch (error) {
+                    console.log('Audio not available - silent disappointment mode activated');
+                }
+            }
+            
+            setupQuotes() {
+                // Show first quote after 8 seconds
+                setTimeout(() => {
+                    this.showNextQuote();
+                }, 8000);
+                
+                // Rotate quotes every 15 seconds
+                setInterval(() => {
+                    this.showNextQuote();
+                }, 15000);
+            }
+            
+            showNextQuote() {
+                const quoteElement = document.getElementById('cosmicQuote');
+                const textElement = document.getElementById('quoteText');
+                const authorElement = document.getElementById('quoteAuthor');
+                
+                // Fade out current quote
+                quoteElement.classList.remove('visible');
+                
+                setTimeout(() => {
+                    // Update quote content
+                    const quote = this.quotes[this.currentQuoteIndex];
+                    textElement.textContent = quote.text;
+                    authorElement.textContent = quote.author;
+                    
+                    // Move to next quote
+                    this.currentQuoteIndex = (this.currentQuoteIndex + 1) % this.quotes.length;
+                    
+                    // Fade in new quote
+                    quoteElement.classList.add('visible');
+                }, 400); // Wait for fade out to complete
+            }
 
             setupEventListeners() {
                 window.addEventListener('resize', () => this.onWindowResize(), false);
-                
                 // Mouse movement for camera control
                 document.addEventListener('mousemove', (event) => {
                     this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -811,11 +2439,23 @@
                     this.mouseVector.y = -(event.clientY / window.innerHeight) * 2 + 1;
                     
                     this.raycaster.setFromCamera(this.mouseVector, this.camera);
-                    // Get all nebulae from the scene
+                    // Get all clickable objects from the scene
                     const nebulae = this.scene.children.filter(child => 
                         child.userData && child.userData.composition
                     );
-                    const intersects = this.raycaster.intersectObjects([...this.planets, ...this.galaxies, ...nebulae]);
+                    const planetGroups = this.scene.children.filter(child => 
+                        child.userData && child.userData.orbitalPeriod
+                    );
+                    const stations = this.scene.children.filter(child => 
+                        child.userData && child.userData.modules
+                    );
+                    const spacecraft = this.scene.children.filter(child => 
+                        child.userData && child.userData.mission
+                    );
+                    const blackHoles = this.scene.children.filter(child => 
+                        child.userData && child.userData.type === 'Supermassive Black Hole'
+                    );
+                    const intersects = this.raycaster.intersectObjects([...this.planets, ...this.galaxies, ...nebulae, ...planetGroups, ...stations, ...spacecraft, ...blackHoles], true);
                     
                     if (intersects.length > 0) {
                         this.showObjectInfo(intersects[0].object);
@@ -913,6 +2553,41 @@
                             <strong>Magnitude:</strong> ${object.userData.magnitude}
                         `;
                     }
+                    // Check if it's a space station
+                    else if (object.userData.modules && object.userData.crew) {
+                        detailsHTML = `
+                            <strong>Type:</strong> ${object.userData.type}<br>
+                            <strong>Altitude:</strong> ${object.userData.altitude}<br>
+                            <strong>Orbital Speed:</strong> ${object.userData.speed}<br>
+                            <strong>Crew:</strong> ${object.userData.crew} astronauts<br>
+                            <strong>Modules:</strong> ${object.userData.modules}<br>
+                            <strong>Status:</strong> ${object.userData.status}<br>
+                            <strong>Last Contact:</strong> ${object.userData.lastContact}
+                        `;
+                    }
+                    // Check if it's a spacecraft
+                    else if (object.userData.mission && object.userData.fuel) {
+                        detailsHTML = `
+                            <strong>Type:</strong> ${object.userData.type}<br>
+                            <strong>Mission:</strong> ${object.userData.mission}<br>
+                            <strong>Status:</strong> ${object.userData.status}<br>
+                            <strong>Crew:</strong> ${object.userData.crew} people<br>
+                            <strong>Fuel Level:</strong> ${object.userData.fuel}
+                        `;
+                    }
+                    // Check if it's a black hole
+                    else if (object.userData.type === 'Supermassive Black Hole') {
+                        detailsHTML = `
+                            <strong>Type:</strong> ${object.userData.type}<br>
+                            <strong>Mass:</strong> ${object.userData.mass}<br>
+                            <strong>Distance:</strong> ${object.userData.distance}<br>
+                            <strong>Event Horizon:</strong> ${object.userData.eventHorizonRadius}<br>
+                            <strong>Temperature:</strong> ${object.userData.temperature}<br>
+                            <strong>Status:</strong> ${object.userData.status}<br>
+                            <strong>Accretion Rate:</strong> ${object.userData.accretionRate}<br>
+                            <strong>Discovery:</strong> ${object.userData.discovery}
+                        `;
+                    }
                     // Fallback for other objects
                     else {
                         detailsHTML = `
@@ -955,12 +2630,123 @@
                     galaxy.rotation.y += 0.001;
                 });
 
+                // Animate space stations
+                this.spaceStations.forEach((station, index) => {
+                    // Rotate station slowly
+                    station.rotation.y += 0.005;
+                    
+                    // Animate solar panels
+                    station.children.forEach((child, childIndex) => {
+                        if (childIndex >= 1 && childIndex <= 4) { // Solar panels
+                            child.rotation.z += 0.002;
+                        }
+                    });
+                    
+                    // Blink navigation lights
+                    const time = Date.now() * 0.001;
+                    station.children.forEach((child, childIndex) => {
+                        if (childIndex >= 7) { // Navigation lights
+                            child.material.opacity = 0.4 + Math.sin(time * 3 + childIndex) * 0.4;
+                        }
+                    });
+                });
+
+                // Animate spacecraft
+                this.spacecraft.forEach(craft => {
+                    // Orbital motion
+                    craft.orbitalAngle += craft.orbitalSpeed;
+                    craft.position.x = Math.cos(craft.orbitalAngle) * craft.orbitalRadius;
+                    craft.position.z = Math.sin(craft.orbitalAngle) * craft.orbitalRadius;
+                    
+                    // Slight rotation
+                    craft.rotation.y += 0.01;
+                    
+                    // Animate thruster glow
+                    const thruster = craft.children[1];
+                    if (thruster) {
+                        thruster.material.opacity = 0.4 + Math.sin(Date.now() * 0.005) * 0.2;
+                    }
+                });
+
+                // Animate black hole
+                if (this.blackHole) {
+                    // Rotate accretion disk
+                    this.blackHole.accretionDisk.rotation.z += 0.01;
+                    this.blackHole.innerDisk.rotation.z += 0.015;
+                    
+                    // Animate plasma jets
+                    this.blackHole.jets.forEach((jet, index) => {
+                        jet.material.opacity = 0.4 + Math.sin(Date.now() * 0.003 + index) * 0.2;
+                        jet.scale.y = 0.8 + Math.sin(Date.now() * 0.002 + index) * 0.3;
+                    });
+                    
+                    // Pulse the photon sphere
+                    const photonSphere = this.blackHole.children[1];
+                    if (photonSphere) {
+                        photonSphere.material.opacity = 0.05 + Math.sin(Date.now() * 0.001) * 0.05;
+                    }
+                }
+
+                // Animate meteors
+                for (let i = this.meteors.length - 1; i >= 0; i--) {
+                    const meteor = this.meteors[i];
+                    
+                    // Move meteor
+                    meteor.position.add(meteor.velocity);
+                    meteor.life++;
+                    
+                    // Rotate meteor for realism
+                    meteor.rotation.x += 0.1;
+                    meteor.rotation.y += 0.05;
+                    
+                    // Update trail effect
+                    const trail = meteor.children[1]; // Trail is second child
+                    if (trail && trail.geometry) {
+                        const positions = trail.geometry.attributes.position.array;
+                        // Shift trail positions
+                        for (let j = positions.length - 3; j >= 3; j -= 3) {
+                            positions[j] = positions[j - 3];
+                            positions[j + 1] = positions[j - 2];
+                            positions[j + 2] = positions[j - 1];
+                        }
+                        // Set new head position
+                        positions[0] = 0;
+                        positions[1] = 0;
+                        positions[2] = 0;
+                        trail.geometry.attributes.position.needsUpdate = true;
+                    }
+                    
+                    // Fade out meteor as it ages
+                    const fadeRatio = Math.max(0, 1 - meteor.life / meteor.maxLife);
+                    meteor.children.forEach(child => {
+                        if (child.material) {
+                            child.material.opacity = fadeRatio * 0.8;
+                        }
+                    });
+                    
+                    // Remove old meteors and create new ones
+                    if (meteor.life > meteor.maxLife || meteor.position.length() > 10000) {
+                        this.scene.remove(meteor);
+                        this.meteors.splice(i, 1);
+                        
+                        // Create new meteor to maintain count
+                        if (Math.random() < 0.3) { // 30% chance to spawn new meteor
+                            this.createSingleMeteor();
+                        }
+                    }
+                }
+
                 // Twinkle stars
                 this.stars.forEach(starField => {
                     if (starField.material.opacity) {
                         starField.material.opacity = 0.6 + Math.sin(Date.now() * 0.001) * 0.2;
                     }
                 });
+                
+                // Slowly rotate Milky Way
+                if (this.milkyWay) {
+                    this.milkyWay.rotation.y += 0.0001;
+                }
 
                 // Update HUD
                 this.updateHUD();
